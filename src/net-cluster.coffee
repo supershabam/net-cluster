@@ -4,10 +4,14 @@ dns = require "dns"
 nop = require "nop"
 TCP = process.binding('tcp_wrap').TCP
 
+##
+# utility function
 extend = (obj, mixin) ->
-  obj[name] = method for name, method in mixin
+  obj[name] = method for name, method of mixin    
   obj
 
+##
+# functions from node's net module
 toNumber = (x) ->
   x = Number(x)
   if x >= 0
@@ -22,6 +26,8 @@ errnoException = (errorno, syscall) ->
   e.syscall = syscall
   return e
 
+##
+# new server class extending node's net.Server
 class Server extends net.Server
   _netClusterListen: (address, port, addressType) ->
     handle = new TCP()
@@ -95,7 +101,11 @@ class Server extends net.Server
       return @emit 'error', err if err
       @_netClusterListen.apply(@, portArgs)
 
-extend module.exports, net
+##
+# provide everything that the net module does
+extend(module.exports, net)
+
+# but override the createServer function to use our server
 module.exports.createServer = ->
   new Server(arguments[0], arguments[1])
 
