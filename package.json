@@ -4,8 +4,8 @@
   "description": "a stand-in wrapper around node's net module that works in a sane way when clustered",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "preinstall": "cake build"
+    "test": "cake test",
+    "install": "cake build"
   },
   "repository": {
     "type": "git",
@@ -14,12 +14,14 @@
   "keywords": [
     "net",
     "cluster",
-    "listen"
+    "listen",
+    "port0"
   ],
   "author": "Ian Hansen",
   "license": "MIT",
   "dependencies": {
     "nop": "0.0.0",
-    "clusterhub": "~0.2.1"
+    "clusterhub": "0.2.1",
+    "coffee-script": "1.3.3"
   }
 }
