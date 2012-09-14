@@ -1,0 +1,24 @@
+{
+  "name": "net-cluster",
+  "version": "0.0.0",
+  "description": "a stand-in wrapper around node's net module that works in a sane way when clustered",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/supershabam/net-cluster"
+  },
+  "keywords": [
+    "net",
+    "cluster",
+    "listen"
+  ],
+  "author": "Ian Hansen",
+  "license": "MIT",
+  "dependencies": {
+    "nop": "0.0.0",
+    "clusterhub": "~0.2.1"
+  }
+}
