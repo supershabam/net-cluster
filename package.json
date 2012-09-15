@@ -1,6 +1,6 @@
 {
   "name": "net-cluster",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "a drop-in replacement for node's net module that works in a sane way when clustered",
   "main": "index.js",
   "scripts": {
@@ -24,7 +24,7 @@
   "license": "MIT",
   "dependencies": {
     "nop": "0.0.0",
-    "coffee-script": "1.3.3"    
+    "coffee-script": "1.3.3"
   },
   "devDependencies": {
     "clusterhub": "0.2.1",
