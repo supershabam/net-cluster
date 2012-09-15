@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Net-cluster by supershabam</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Net-cluster</h1>
+        <p>a drop-in replacement for node's net module that works in a sane way when clustered</p>
+
+        <p class="view"><a href="https://github.com/supershabam/net-cluster">View the Project on GitHub <small>supershabam/net-cluster</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/supershabam/net-cluster/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/supershabam/net-cluster/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/supershabam/net-cluster">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>net-cluster</h1>
+
+<p><a href="http://travis-ci.org/supershabam/net-cluster"><img src="https://secure.travis-ci.org/supershabam/net-cluster.png?branch=master" alt="Build Status"></a></p>
+
+<h3>a drop-in replacement for node's net module that works in a sane way when clustered</h3>
+
+<h2>listening on random port</h2>
+
+<div class="highlight"><pre><span class="nx">server</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+
+<p><a href="http://nodejs.org/api/cluster.html">http://nodejs.org/api/cluster.html</a></p>
+
+<p>from the documentation:</p>
+
+<blockquote>
+<p>Normally, this will case servers to listen on a random port. However, in a cluster, each worker will receive the same "random" port each time they do listen(0). In essence, the port is random the first time, but predictable thereafter. If you want to listen on a unique port, generate a port number based on the cluster worker ID.</p>
+</blockquote>
+
+<h3>2 problems with this functionality</h3>
+
+<ul>
+<li>listen(0) should always bind to a random port</li>
+<li>the listen(cluster.workerId) is unreliable
+
+<ul>
+<li><em>you can't gurantee that the port cluster.workerId is available</em></li>
+</ul>
+</li>
+</ul><h3>how net-cluster operates</h3>
+
+<p>listen(0) always binds to a random port</p>
+
+<h3>usage</h3>
+
+<p>net-cluster strictly implements node's net module.</p>
+
+<div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> * uses net-cluster instead of net to create a server</span>
+<span class="cm"> * </span>
+<span class="cm"> * Note: 2 servers will be created and they will be listening</span>
+<span class="cm"> * on 2 distinct random ports. Try using node's net module instead</span>
+<span class="cm"> * of net-cluster and see what happens.</span>
+<span class="cm"> */</span>
+<span class="kd">var</span> <span class="nx">cluster</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'cluster'</span><span class="p">)</span>
+  <span class="p">,</span> <span class="nx">net</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'net-cluster'</span><span class="p">)</span>
+  <span class="p">;</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nx">cluster</span><span class="p">.</span><span class="nx">isMaster</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">cluster</span><span class="p">.</span><span class="nx">fork</span><span class="p">();</span>
+  <span class="nx">cluster</span><span class="p">.</span><span class="nx">fork</span><span class="p">();</span>
+<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cluster</span><span class="p">.</span><span class="nx">isWorker</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">server</span> <span class="o">=</span> <span class="nx">net</span><span class="p">.</span><span class="nx">createServer</span><span class="p">();</span>
+  <span class="nx">server</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">port</span> <span class="o">=</span> <span class="nx">server</span><span class="p">.</span><span class="nx">address</span><span class="p">().</span><span class="nx">port</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'listening on port: '</span> <span class="o">+</span> <span class="nx">port</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>use cases</h2>
+
+<ul>
+<li>network application that needs to open multiple non-pre-determined ports</li>
+<li>if you provide a module that listens on port 0
+
+<ul>
+<li>
+<strong>this is a difficult bug for people using your module</strong>. Not 
+only will every instance of your module code be sharing the same 
+socket, but <strong>ANY</strong> other piece of code using listen(0) will be
+sharing the same socket (other modules or even the user's code)</li>
+</ul>
+</li>
+</ul><h2>license</h2>
+
+<p>MIT</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/supershabam">supershabam</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
