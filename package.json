@@ -1,7 +1,7 @@
 {
   "name": "net-cluster",
   "version": "0.0.0",
-  "description": "a stand-in wrapper around node's net module that works in a sane way when clustered",
+  "description": "a drop-in replacement for node's net module that works in a sane way when clustered",
   "main": "index.js",
   "scripts": {
     "test": "cake build && cake test",
