@@ -5,7 +5,7 @@ net-cluster
 
 ### a drop-in replacement for node's net module that works in a sane way when clustered
 
-## listening on random port
+## listening on a random port
 
 ```javascript
 server.listen(0)
@@ -20,6 +20,10 @@ from the documentation:
 * listen(0) should always bind to a random port
 * the listen(cluster.workerId) is unreliable
   - *you can't gurantee that the port cluster.workerId is available*
+
+*[read my protip on the issue](http://coderwall.com/p/jr7big)*
+
+***
 
 ### how net-cluster operates
 listen(0) always binds to a random port
