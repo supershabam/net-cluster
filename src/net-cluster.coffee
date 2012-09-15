@@ -1,22 +1,31 @@
-net = require "net"
-cluster = require "cluster"
-dns = require "dns"
-nop = require "nop"
+##
+# net-cluster
+# ===========
+#
+# Copyright (c) 2012 Ian Hansen (//github.com/supershabam)
+# MIT License
+#
+# a drop-in replacement for node's net module that works in a sane way when clustered 
+# -----------------------------------------------------------------------------------
+
+net = require 'net'
+cluster = require 'cluster'
+dns = require 'dns'
+nop = require 'nop'
 TCP = process.binding('tcp_wrap').TCP
 
-##
 # utility function
 extend = (obj, mixin) ->
   obj[name] = method for name, method of mixin    
   obj
 
-##
-# functions from node's net module
+# functions equivalent to those from node's net module
 toNumber = (x) ->
   x = Number(x)
   if x >= 0
     return x
   return false
+
 isPipeName = (s) ->
   typeof s is 'string' and toNumber(s) is false
 
@@ -27,8 +36,15 @@ errnoException = (errorno, syscall) ->
   return e
 
 ##
-# new server class extending node's net.Server
+# Server class extending node's net.Server
+#
+# Only intercepts functionality when neccessary in order to make
+# listening on port 0 work as Al Gore intended
 class Server extends net.Server
+
+  ##
+  # manually create a tcp handle and pass it to the _listen2 function. 
+  # If we already have a handle then _listen2 won't try and make one.
   _netClusterListen: (address, port, addressType) ->
     handle = new TCP()
     errno = 0
@@ -41,7 +57,7 @@ class Server extends net.Server
     if errno
       handle.close()
       error = errnoException(errno, 'listen')
-      process.nextTick ->
+      process.nextTick =>
         @.emit 'error', error
       
     else
@@ -49,6 +65,12 @@ class Server extends net.Server
       @._handle = handle
       @._listen2.apply(@, arguments)
 
+  ##
+  # whether or not we should intercept the call to listen
+  #
+  # requirements:
+  # * must be a worker in a cluster environment
+  # * must be attempting to listen on port 0
   _doNetClusterIntercept: ->
     # only intercept if we're a worker
     if !cluster.isWorker
@@ -69,6 +91,8 @@ class Server extends net.Server
     else
       return port == 0
 
+  ##
+  # helper function to parse from an arguments array the parameters to pass to _netClusterListen
   _getPortArguments: (args, cb) ->
     port = toNumber args[0]
     backlog = toNumber(args[1] || toNumber(args[2]))
@@ -85,6 +109,8 @@ class Server extends net.Server
           addressType = 4
         return cb(null, [ip, port, addressType, backlog])
 
+  ##
+  # overrides node's listen method with one that makes me happy
   listen: ->
     # skip this override if possible
     if !@_doNetClusterIntercept.apply(@, arguments)
@@ -101,11 +127,9 @@ class Server extends net.Server
       return @emit 'error', err if err
       @_netClusterListen.apply(@, portArgs)
 
-##
 # provide everything that the net module does
 extend(module.exports, net)
 
 # but override the createServer function to use our server
 module.exports.createServer = ->
   new Server(arguments[0], arguments[1])
-
