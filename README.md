@@ -1,9 +1,11 @@
 net-cluster
 ===========
 
+### a drop-in replacement for node's net module that works in a sane way when clustered
+
 [![Build Status](https://secure.travis-ci.org/supershabam/net-cluster.png?branch=master)](http://travis-ci.org/supershabam/net-cluster)
 
-### a drop-in replacement for node's net module that works in a sane way when clustered
+[![endorse](http://api.coderwall.com/supershabam/endorsecount.png)](http://coderwall.com/supershabam)
 
 ## listening on a random port
 
