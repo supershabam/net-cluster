@@ -133,3 +133,6 @@ extend(module.exports, net)
 # but override the createServer function to use our server
 module.exports.createServer = ->
   new Server(arguments[0], arguments[1])
+
+# also override the original net.Server
+module.exports.Server = Server
