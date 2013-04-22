@@ -1,4 +1,4 @@
-### This is a fork of [!http://travis-ci.org/supershabam/net-cluster](http://travis-ci.org/supershabam/net-cluster).
+### This is a fork of [(http://travis-ci.org/supershabam/net-cluster)](http://travis-ci.org/supershabam/net-cluster).
 
 net-cluster
 ===========
