@@ -1,11 +1,9 @@
-### This is a fork of [https://github.com/supershabam/net-cluster](https://github.com/supershabam/net-cluster).
-
 net-cluster
 ===========
 
 ### a drop-in replacement for node's net module that works in a sane way when clustered
 
-[![Build Status](https://secure.travis-ci.org/liuyanghejerry/net-cluster.png?branch=master)](http://travis-ci.org/liuyanghejerry/net-cluster)
+[![Build Status](https://secure.travis-ci.org/supershabam/net-cluster.png?branch=master)](http://travis-ci.org/supershabam/net-cluster)
 
 ## listening on a random port
 
