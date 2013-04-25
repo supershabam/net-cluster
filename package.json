@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "grunt run:test",
-    "prepublish": "grunt coffee",
+    "prepublish": "grunt coffee"
   },
   "repository": {
     "type": "git",
