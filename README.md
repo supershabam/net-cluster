@@ -14,7 +14,7 @@ http://nodejs.org/api/cluster.html
 
 from the documentation:
 
-> Normally, this will case servers to listen on a random port. However, in a cluster, each worker will receive the same "random" port each time they do listen(0). In essence, the port is random the first time, but predictable thereafter. If you want to listen on a unique port, generate a port number based on the cluster worker ID.
+> Normally, this will cause servers to listen on a random port. However, in a cluster, each worker will receive the same "random" port each time they do listen(0). In essence, the port is random the first time, but predictable thereafter. If you want to listen on a unique port, generate a port number based on the cluster worker ID.
 
 ### 2 problems with this functionality
 * listen(0) should always bind to a random port
@@ -24,7 +24,7 @@ from the documentation:
 ***
 
 ### how net-cluster operates
-listen(0) always binds to a random port
+* listen(0) always binds to a random port  
 
 ### usage
 net-cluster strictly implements node's net module.
