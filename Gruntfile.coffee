@@ -17,22 +17,22 @@ module.exports = (grunt) ->
       src: "lib"
       dest: "lib-cov"
     mocha:
-      options:
-        args: [
-          "test/"
-        ]
-      default:
+      net_cluster_0:
+        options:
+          args: ["test/net-cluster.port0.test.coffee"]
         reporter: "list"
         console: true
-      cover: 
-        reporter: "html-cov"
-        cover: true
-        file: "cover.html"
+      net_cluster_9002:
+        options:
+          args: ["test/net-cluster.port9002.test.coffee"]
+        reporter: "list"
+        console: true
+
 
   grunt.loadNpmTasks("grunt-contrib-clean")
   grunt.loadNpmTasks("grunt-contrib-coffee")
   grunt.loadTasks("tasks")
 
   grunt.registerTask "run:cover", ["coffee", "jscoverage", "mocha:cover", "open-cover"]
-  grunt.registerTask "run:test", ["coffee", "mocha:default"]
+  grunt.registerTask "run:test", ["coffee", "mocha:net_cluster_0", "mocha:net_cluster_9002"]
   grunt.registerTask "default", ["run:test"]

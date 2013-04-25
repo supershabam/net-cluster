@@ -41,7 +41,7 @@ class Server extends net.Server
   # overrides node's listen method with one that makes me happy
   listen: (args...)=>
     # skip this override if possible
-    return super args unless utils.shouldDoIntercept args
+    return super unless utils.shouldDoIntercept args
 
     # emulate overridden listen callback functionality since we're doing our own thing now
     lastArg = args[args.length - 1]

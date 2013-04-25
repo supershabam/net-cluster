@@ -45,7 +45,7 @@ module.exports = (grunt)->
     if @data.colors
       args.push "--colors"
     if options.args?.length
-      args.concat options.args
+      args = args.concat options.args
 
     # run mocha
     mocha = spawn bin, args, {env: env}
