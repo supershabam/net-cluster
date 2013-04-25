@@ -21,8 +21,6 @@ from the documentation:
 * the listen(cluster.workerId) is unreliable
   - *you can't gurantee that the port cluster.workerId is available*
 
-*[read my protip on the issue](http://coderwall.com/p/jr7big)*
-
 ***
 
 ### how net-cluster operates
