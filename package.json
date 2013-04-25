@@ -1,6 +1,6 @@
 {
   "name": "net-cluster",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "a drop-in replacement for node's net module that works in a sane way when clustered",
   "main": "index.js",
   "scripts": {
