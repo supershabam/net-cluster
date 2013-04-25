@@ -4,11 +4,8 @@
   "description": "a drop-in replacement for node's net module that works in a sane way when clustered",
   "main": "index.js",
   "scripts": {
-    "test": "cake build && cake test",
-    "install": "cake build",
-    "docs": "cake docs",
-    "prepublish": "cake build && cake test && cake docs",
-    "watch": "cake watch"
+    "test": "grunt run:test",
+    "prepublish": "grunt coffee",
   },
   "repository": {
     "type": "git",
